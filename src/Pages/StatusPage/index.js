@@ -24,6 +24,10 @@ function StatusPage() {
     (state) => state.appContainer,
     shallowEqual
   );
+  const labelDevice = [];
+  const valueDevice = [];
+  const labelNetwork = [];
+  const valueNetwork = [];
 
   useEffect(() => {
     dispatch(getDevices());
@@ -31,7 +35,16 @@ function StatusPage() {
 
   const device = deviceData?.data?.device;
   const network = deviceData?.data?.network?.en0[1];
-  console.log(network);
+
+  for (const key in device) {
+    labelDevice.push(key);
+    valueDevice.push(device[key]);
+  }
+  for (const key in network) {
+    labelNetwork.push(key);
+    valueNetwork.push(network[key]);
+  }
+
   return (
     <div>
       <HeaderWrapper>
@@ -50,26 +63,16 @@ function StatusPage() {
         </Box>
       ) : (
         <Box sx={{ paddingX: "80px" }}>
-          <Row>
-            <Typography paragraph>Free Memory :</Typography>
-            <Typography paragraph>{device?.free_memory}</Typography>
-          </Row>
-          <Row>
-            <Typography paragraph>Localtime :</Typography>
-            <Typography paragraph>{device?.localtime}</Typography>
-          </Row>
-          <Row>
-            <Typography paragraph>Mac :</Typography>
-            <Typography paragraph>{device?.mac}</Typography>
-          </Row>
-          <Row>
-            <Typography paragraph>Mac :</Typography>
-            <Typography paragraph>{device?.memory_usage}</Typography>
-          </Row>
-          <Row>
-            <Typography paragraph>Mac :</Typography>
-            <Typography paragraph>{device?.uptime}</Typography>
-          </Row>
+          {valueDevice.map((item, idx) => {
+            return (
+              <Row>
+                <Typography paragraph> {labelDevice[idx]} :</Typography>
+                <Typography paragraph>
+                  {` `} {item}
+                </Typography>
+              </Row>
+            );
+          })}
         </Box>
       )}
 
@@ -90,30 +93,16 @@ function StatusPage() {
         </Box>
       ) : (
         <Box sx={{ paddingX: "80px" }}>
-          <Row>
-            <Typography paragraph>wifi :</Typography>
-            <Typography paragraph>utuk tuktus</Typography>
-          </Row>
-          <Row>
-            <Typography paragraph>address :</Typography>
-            <Typography paragraph>{network?.address}</Typography>
-          </Row>
-          <Row>
-            <Typography paragraph>cidr :</Typography>
-            <Typography paragraph>{network?.cidr}</Typography>
-          </Row>
-          <Row>
-            <Typography paragraph>family :</Typography>
-            <Typography paragraph>{network?.family}</Typography>
-          </Row>
-          <Row>
-            <Typography paragraph>mac :</Typography>
-            <Typography paragraph>{network?.mac}</Typography>
-          </Row>
-          <Row>
-            <Typography paragraph>netmask :</Typography>
-            <Typography paragraph>{network?.netmask}</Typography>
-          </Row>
+          {valueNetwork.map((item, idx) => {
+            return (
+              <Row>
+                <Typography paragraph> {labelNetwork[idx]}:</Typography>
+                <Typography paragraph>
+                  {` `} {item}
+                </Typography>
+              </Row>
+            );
+          })}
         </Box>
       )}
     </div>
